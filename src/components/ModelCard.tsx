@@ -11,6 +11,19 @@ const providerColors: Record<string, string> = {
   Mistral: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
   Alibaba: 'bg-red-500/20 text-red-300 border-red-500/30',
   xAI: 'bg-slate-500/20 text-slate-300 border-slate-500/30',
+  Moonshot: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+}
+
+const providerCountry: Record<string, { flag: string; name: string }> = {
+  OpenAI: { flag: '🇺🇸', name: 'USA' },
+  Anthropic: { flag: '🇺🇸', name: 'USA' },
+  Google: { flag: '🇺🇸', name: 'USA' },
+  Meta: { flag: '🇺🇸', name: 'USA' },
+  xAI: { flag: '🇺🇸', name: 'USA' },
+  Mistral: { flag: '🇫🇷', name: 'France' },
+  DeepSeek: { flag: '🇨🇳', name: 'China' },
+  Alibaba: { flag: '🇨🇳', name: 'China' },
+  Moonshot: { flag: '🇨🇳', name: 'China' },
 }
 
 const benchmarkColors: Record<string, string> = {
@@ -29,6 +42,7 @@ function fmt(n: number) {
 
 export function ModelCard({ model }: { model: LLMModel }) {
   const badge = providerColors[model.provider] ?? 'bg-slate-500/20 text-slate-300 border-slate-500/30'
+  const country = providerCountry[model.provider]
 
   return (
     <div className="bg-white/[0.03] border border-white/10 rounded-xl p-4 hover:border-violet-500/30 hover:bg-white/[0.06] transition-all group">
@@ -39,11 +53,30 @@ export function ModelCard({ model }: { model: LLMModel }) {
             {model.provider}
           </span>
         </div>
-        <div className="flex gap-1">
-          {model.openSource
-            ? <Globe size={14} className="text-emerald-400" aria-label="Open source" />
-            : <Lock size={14} className="text-slate-500" aria-label="Closed source" />}
-          {model.multimodal && <BookOpen size={14} className="text-blue-400" aria-label="Multimodal" />}
+        <div className="flex items-center gap-1.5">
+          {country && (
+            <span
+              className="text-sm leading-none"
+              aria-label={country.name}
+              title={country.name}
+            >
+              {country.flag}
+            </span>
+          )}
+          {model.openSource ? (
+            <Globe size={14} className="text-emerald-400" aria-label="Open source">
+              <title>Open source</title>
+            </Globe>
+          ) : (
+            <Lock size={14} className="text-slate-500" aria-label="Closed source">
+              <title>Closed source</title>
+            </Lock>
+          )}
+          {model.multimodal && (
+            <BookOpen size={14} className="text-blue-400" aria-label="Multimodal">
+              <title>Multimodal</title>
+            </BookOpen>
+          )}
         </div>
       </div>
 
